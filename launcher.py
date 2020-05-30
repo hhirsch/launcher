@@ -15,7 +15,6 @@ def print_hello():
 root = tk.Tk()
 root.geometry("960x600")
 
-#Creates a Tkinter-compatible photo image, which can be used everywhere Tkinter expects an image object.
 annoImg = ImageTk.PhotoImage(Image.open("anno.jpg"))
 aoeImg = ImageTk.PhotoImage(Image.open("aoe2.png"))
 
