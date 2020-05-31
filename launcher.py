@@ -1,67 +1,50 @@
-import tkinter as tk
-from tkinter import PhotoImage, Label
-from PIL import ImageTk, Image
-import os, subprocess
-from sys import platform
-from os import path
-import json
-from lib import helper
-from lib.assetexception import AssetException
+from __future__ import print_function
+from subprocess import call
+from shutil import which
+from datetime  import datetime
 
-def gameIsInProfile(game):
-    return path.exists(helper.getProfilePath(game))
+def log(message):
+    print(datetime.now().strftime("%a %b %d %H:%M:%S") + " - " + str(message))
 
-def gameIsInCache(game):
-    return path.exists(helper.getCachePath(game))
+def isToolAvailable(name):
+    """Check whether tool exists and is executable."""
 
-def runGenericGame(game, data):
-    gamePath = os.path.normpath(helper.getCachePath(game))
-    if "path" in data:
-        gamePath = gamePath + '/' + data['path']
+    return which(name) is not None
 
-    exePath = data['exe']
-    call = [exePath]
+def installPip():
+    """
+    Pip is the standard package manager for Python. Starting with Python 3.4
+    it's included in the default installation, but older versions may need to
+    download and install it. This code should pretty cleanly do just that.
+    """
+    log("Installing pip, the standard Python Package Manager")
+    from os     import remove
+    from urllib import urlretrieve
+    urlretrieve("https://bootstrap.pypa.io/get-pip.py", "get-pip.py")
+    call(["python", "get-pip.py"])
+    remove("get-pip.py")
 
-    if platform in ["linux", "linux2"]:
-        call.insert(0, "wine")
+def getPip():
+    """
+    Pip is the standard package manager for Python.
+    This returns the path to the pip executable, installing it if necessary.
+    """
+    from os.path import isfile, join
 
-    if "params" in data:
-        for index, param in enumerate(data['params']):
-            call.append(param)
+    if not isToolAvailable("pip"):
+        installPip(log)
+        if not isToolAvailable("pip"):
+            raise("Failed to find or install pip!")
+    return "pip"
 
+def installIfNeeded(moduleName, nameOnPip=None, notes=""):
+    """ Installs a Python library using pip, if it isn't installed. """
+    from pkgutil import iter_modules
 
-    subprocess.call(call, cwd=gamePath)
+    # Check if the module is installed
+    if moduleName not in [tuple_[1] for tuple_ in iter_modules()]:
+        log("Installing " + moduleName + notes + " Library for Python")
+        call([getPip(), "install", nameOnPip if nameOnPip else moduleName])
 
-
-def getRunFunction(game, data):
-    runFunction = lambda: runGenericGame(game, data)
-    return runFunction
-
-
-def addGame(game, data, root):
-    runFunction = getRunFunction(game, data)
-    try:
-        gameImage = ImageTk.PhotoImage(Image.open(helper.getImagePath(game)))
-        label = Label(image=gameImage)
-        label.image = gameImage
-        gameButton = tk.Button(root, text=game, image=gameImage, command=runFunction)
-    except AssetException:
-        invisiblePixel = tk.PhotoImage(width=1, height=1)
-        label = Label(image=invisiblePixel)
-        label.image = invisiblePixel
-        gameButton = tk.Button(root, text=game, image=invisiblePixel, command=runFunction, height = 206-10, width = 390-10, compound="c")
-    return gameButton
-
-root = tk.Tk()
-root.geometry("960x600")
-
-json_file = 'launcher.json'
-with open(json_file) as json_data:
-    data = json.load(json_data)
-
-for index, content in enumerate(data['games']):
-    gameButton = addGame(content, data['games'][content], root)
-    currentRow = (index+1) / 5
-    gameButton.grid(row=int(currentRow), column=index+1)
-
-root.mainloop()
+installIfNeeded("Pillow")
+call(["python", "launcher-ui.py"])
