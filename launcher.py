@@ -30,36 +30,25 @@ def gameIsInCache(game):
 def copyToProfile(game):
     print('hello')
 
-def runAoe():
-    game = "wololo-kingdoms"
-    if not gameIsInProfile(game):
-        copyToProfile(game)
-    agePath = os.path.normpath('wololo-kingdoms/age2_x1')
-    if platform in ["linux", "linux2"]:
-        subprocess.call(["wine", "WK.exe"], cwd=agePath)
-    else:
-        subprocess.call("WK.exe", cwd=agePath)
-
-
-def runAnno():
-    agePath = os.path.normpath('anno')
-    if platform in ["linux", "linux2"]:
-        subprocess.call(["wine", "1602.exe"], cwd=agePath)
-    else:
-        subprocess.call("1602.exe", cwd=agePath)
-    print('hello')
 
 def runGenericGame(game, data):
     gamePath = os.path.normpath(getCachePath(game))
     if data['path']:
         gamePath = gamePath + '/' + data['path']
-    print(gamePath)
+
     exePath = data['exe']
+    call = [exePath]
+
     if platform in ["linux", "linux2"]:
-        subprocess.call(["wine", exePath], cwd=gamePath)
-    else:
-        subprocess.call(exePath, cwd=gamePath)
-    print('hello')
+        call.insert(0, "wine")
+
+    if data['params']:
+        for index, param in enumerate(data['params']):
+            call.append(param)
+
+
+    subprocess.call(call, cwd=gamePath)
+
 
 def getRunFunction(game, data):
     runFunction = lambda: runGenericGame(game, data)
@@ -70,8 +59,7 @@ def addGame(game, data, root):
     runFunction = getRunFunction(game, data)
     gameImage = ImageTk.PhotoImage(Image.open(getImagePath(game)))
     label = Label(image=gameImage)
-    label.image = gameImage # keep a reference!
-    print(gameImage)
+    label.image = gameImage
     gameButton = tk.Button(root, text=game, image=gameImage, command=runFunction)
     return gameButton
 
@@ -82,21 +70,9 @@ json_file = 'launcher.json'
 with open(json_file) as json_data:
     data = json.load(json_data)
 
-#for i in range(len(data['games'])):
-#    print (games[i])
 for index, content in enumerate(data['games']):
     gameButton = addGame(content, data['games'][content], root)
     currentRow = (index+1) / 5
     gameButton.grid(row=int(currentRow), column=index+1)
-#    print(content, data['games'][content])
-
-# annoImg = ImageTk.PhotoImage(Image.open(os.path.normpath("data/anno.jpg")))
-# aoeImg = ImageTk.PhotoImage(Image.open(os.path.normpath("data/wololo-kingdoms.png")))
-
-# annoButton = tk.Button(root, text="anno", image=annoImg, command=runAnno)
-# annoButton.grid(row=1,column=1)
-
-# aoeButton = tk.Button(root, text="age", image=aoeImg, command=runAoe)
-# aoeButton.grid(row=1,column=2)
 
 root.mainloop()
