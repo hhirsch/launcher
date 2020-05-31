@@ -1,4 +1,5 @@
 from os import path
+from .assetexception import AssetException
 
 def getCachePath(game):
     return path.normpath('repository/' + game)
@@ -14,6 +15,7 @@ def getImagePath(game):
     if path.exists(imagePath + '.jpg'):
         return imagePath + '.jpg'
 
+    raise AssetException("Image not found!")
 
 def copyToProfile(game):
     print('hello')

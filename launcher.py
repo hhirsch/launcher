@@ -5,16 +5,17 @@ import os, subprocess
 from sys import platform
 from os import path
 import json
-from lib import launcher
+from lib import helper
+from lib.assetexception import AssetException
 
 def gameIsInProfile(game):
-    return path.exists(launcher.getProfilePath(game))
+    return path.exists(helper.getProfilePath(game))
 
 def gameIsInCache(game):
-    return path.exists(launcher.getCachePath(game))
+    return path.exists(helper.getCachePath(game))
 
 def runGenericGame(game, data):
-    gamePath = os.path.normpath(launcher.getCachePath(game))
+    gamePath = os.path.normpath(helper.getCachePath(game))
     if "path" in data:
         gamePath = gamePath + '/' + data['path']
 
@@ -39,10 +40,16 @@ def getRunFunction(game, data):
 
 def addGame(game, data, root):
     runFunction = getRunFunction(game, data)
-    gameImage = ImageTk.PhotoImage(Image.open(launcher.getImagePath(game)))
-    label = Label(image=gameImage)
-    label.image = gameImage
-    gameButton = tk.Button(root, text=game, image=gameImage, command=runFunction)
+    try:
+        gameImage = ImageTk.PhotoImage(Image.open(helper.getImagePath(game)))
+        label = Label(image=gameImage)
+        label.image = gameImage
+        gameButton = tk.Button(root, text=game, image=gameImage, command=runFunction)
+    except AssetException:
+        invisiblePixel = tk.PhotoImage(width=1, height=1)
+        label = Label(image=invisiblePixel)
+        label.image = invisiblePixel
+        gameButton = tk.Button(root, text=game, image=invisiblePixel, command=runFunction, height = 206-10, width = 390-10, compound="c")
     return gameButton
 
 root = tk.Tk()
