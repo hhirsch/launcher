@@ -33,7 +33,7 @@ def copyToProfile(game):
 
 def runGenericGame(game, data):
     gamePath = os.path.normpath(getCachePath(game))
-    if data['path']:
+    if "path" in data:
         gamePath = gamePath + '/' + data['path']
 
     exePath = data['exe']
@@ -42,7 +42,7 @@ def runGenericGame(game, data):
     if platform in ["linux", "linux2"]:
         call.insert(0, "wine")
 
-    if data['params']:
+    if "params" in data:
         for index, param in enumerate(data['params']):
             call.append(param)
 
