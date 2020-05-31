@@ -5,34 +5,16 @@ import os, subprocess
 from sys import platform
 from os import path
 import json
-
-def getImagePath(game):
-    imagePath = os.path.normpath('data/images/' + game)
-    if path.exists(imagePath + '.png'):
-        return imagePath + '.png'
-
-    if path.exists(imagePath + '.jpg'):
-        return imagePath + '.jpg'
-
-def getCachePath(game):
-    return os.path.normpath('repository/' + game)
-
-def getProfilePath(game):
-    return os.path.normpath('games/' + game)
+from lib import launcher
 
 def gameIsInProfile(game):
-    return path.exists(getProfilePath(game))
+    return path.exists(launcher.getProfilePath(game))
 
 def gameIsInCache(game):
-    return path.exists(getCachePath(game))
-
-
-def copyToProfile(game):
-    print('hello')
-
+    return path.exists(launcher.getCachePath(game))
 
 def runGenericGame(game, data):
-    gamePath = os.path.normpath(getCachePath(game))
+    gamePath = os.path.normpath(launcher.getCachePath(game))
     if "path" in data:
         gamePath = gamePath + '/' + data['path']
 
@@ -57,7 +39,7 @@ def getRunFunction(game, data):
 
 def addGame(game, data, root):
     runFunction = getRunFunction(game, data)
-    gameImage = ImageTk.PhotoImage(Image.open(getImagePath(game)))
+    gameImage = ImageTk.PhotoImage(Image.open(launcher.getImagePath(game)))
     label = Label(image=gameImage)
     label.image = gameImage
     gameButton = tk.Button(root, text=game, image=gameImage, command=runFunction)
