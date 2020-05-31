@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import PhotoImage, Label
+from tkinter import PhotoImage, Label, messagebox
 from PIL import ImageTk, Image
 import os, subprocess
 from sys import platform
@@ -22,7 +22,7 @@ def runGenericGame(game, data):
     if "linux-exe" in data:
         call = [data['linux-exe']]
     else:
-        call = data['exe']
+        call = [data['exe']]
         if platform in ["linux", "linux2"]:
             call.insert(0, "wine")
 
@@ -52,14 +52,27 @@ def addGame(game, data, root):
 
 root = tk.Tk()
 root.geometry("960x600")
+root.title('Game Launcher')
 
 json_file = 'launcher.json'
 with open(json_file) as json_data:
     data = json.load(json_data)
 
+def showPopup(event):
+    menu = tk.Menu(root, tearoff=0)
+    menu.add_command(label='Delete', command=showMessage)
+    menu.add_command(label='Say Hello', command=showMessage)
+    menu.post(event.x_root, event.y_root)
+
+def showMessage():
+    print("POOOPUP")
+    messagebox.showinfo("Title", "a Tk MessageBox")
+
+
 for index, content in enumerate(data['games']):
     gameButton = addGame(content, data['games'][content], root)
     currentRow = (index+1) / 5
+    gameButton.bind("<Button-3>", showPopup)
     gameButton.grid(row=int(currentRow), column=index+1)
 
 root.mainloop()
