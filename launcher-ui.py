@@ -19,24 +19,22 @@ def runGenericGame(game, data):
     if "path" in data:
         gamePath = gamePath + '/' + data['path']
 
-    exePath = data['exe']
-    call = [exePath]
-
-    if platform in ["linux", "linux2"]:
-        call.insert(0, "wine")
+    if "linux-exe" in data:
+        call = [data['linux-exe']]
+    else:
+        call = data['exe']
+        if platform in ["linux", "linux2"]:
+            call.insert(0, "wine")
 
     if "params" in data:
         for index, param in enumerate(data['params']):
             call.append(param)
 
-
     subprocess.call(call, cwd=gamePath)
-
 
 def getRunFunction(game, data):
     runFunction = lambda: runGenericGame(game, data)
     return runFunction
-
 
 def addGame(game, data, root):
     runFunction = getRunFunction(game, data)
