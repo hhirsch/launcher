@@ -55,6 +55,7 @@ for index, content in enumerate(menuData):
     menuRunFunction = getRunFunction(content, menuData[content])
     filemenu.add_command(label=content, command=menuRunFunction)
 
+filemenu.add_command(label="Quit", command=root.destroy)
 helpmenu.add_command(label="About", command=showAbout)
 menubar.add_cascade(label="File", menu=filemenu)
 menubar.add_cascade(label="Help", menu=helpmenu)
