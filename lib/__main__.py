@@ -24,11 +24,6 @@ for index, content in enumerate(data['games']):
     gameButton = addGame(content, data['games'][content], root)
     rawRow = (index+1) / rowLenght
     currentRow = math.ceil(rawRow)
-    if "menu" in data['games'][content]:
-        menu = createMenu(root, content, data['games'][content]['menu'])
-        showMenu = lambda event: menu.post(event.x_root, event.y_root)
-        gameButton.bind("<Button-3>", showMenu)
-
     gameButton.grid(row=int(currentRow), column=currentColumn)
     if currentColumn == rowLenght:
         currentColumn = 0;

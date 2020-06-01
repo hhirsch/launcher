@@ -20,6 +20,11 @@ def addGame(game, data, root):
         label = Label(image=invisiblePixel)
         label.image = invisiblePixel
         gameButton = tk.Button(root, text=game, image=invisiblePixel, command=runFunction, height = 215-10, width = 460-10, compound="c", borderwidth=0)
+    if "menu" in data:
+        menu = createMenu(root, game, data['menu'])
+        showMenu = lambda event: menu.post(event.x_root, event.y_root)
+        gameButton.bind("<Button-3>", showMenu)
+
     return gameButton
 
 def createMenu(root, game, menuData):
