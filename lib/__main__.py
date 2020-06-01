@@ -7,6 +7,7 @@ import json, math
 from helper import *
 from assetexception import AssetException
 from callhelper import runGenericGame
+from sys import platform
 
 def getRunFunction(game, data):
     runFunction = lambda: runGenericGame(game, data)
@@ -42,11 +43,22 @@ def createMenu(root, game, menuData):
     for index, content in enumerate(menuData):
         runFunction = getRunFunction(game, menuData[content])
         menu.add_command(label=content, command=runFunction)
-    menu.add_command(label='about', command=showAbout)
     menu.add_command(label='close')
 
     return menu;
 
+menubar = tk.Menu(root)
+filemenu = tk.Menu(menubar, tearoff=0)
+helpmenu = tk.Menu(menubar, tearoff=0)
+menuData = data['launcher']['menu']
+for index, content in enumerate(menuData):
+    menuRunFunction = getRunFunction(content, menuData[content])
+    filemenu.add_command(label=content, command=menuRunFunction)
+
+helpmenu.add_command(label="About", command=showAbout)
+menubar.add_cascade(label="File", menu=filemenu)
+menubar.add_cascade(label="Help", menu=helpmenu)
+root.config(menu=menubar)
 currentColumn = 1;
 rowLenght = 4
 for index, content in enumerate(data['games']):
