@@ -60,7 +60,6 @@ for index, content in enumerate(data['games']):
 
     gameButton.grid(row=int(currentRow), column=currentColumn)
     if currentColumn == rowLenght:
-        currentColumn = 1;
+        currentColumn = 0;
     currentColumn += 1;
-
 root.mainloop()
