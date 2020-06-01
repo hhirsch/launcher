@@ -4,9 +4,9 @@ from PIL import ImageTk, Image
 import os, subprocess
 from os import path
 import json, math
-from lib import helper
-from lib.assetexception import AssetException
-from lib.callhelper import runGenericGame
+from helper import *
+from assetexception import AssetException
+from callhelper import runGenericGame
 
 def getRunFunction(game, data):
     runFunction = lambda: runGenericGame(game, data)
@@ -15,15 +15,15 @@ def getRunFunction(game, data):
 def addGame(game, data, root):
     runFunction = getRunFunction(game, data)
     try:
-        gameImage = ImageTk.PhotoImage(Image.open(helper.getImagePath(game)))
+        gameImage = ImageTk.PhotoImage(Image.open(getImagePath(game)))
         label = Label(image=gameImage)
         label.image = gameImage
-        gameButton = tk.Button(root, text=game, image=gameImage, command=runFunction)
+        gameButton = tk.Button(root, text=game, image=gameImage, command=runFunction, borderwidth=0)
     except AssetException:
         invisiblePixel = tk.PhotoImage(width=1, height=1)
         label = Label(image=invisiblePixel)
         label.image = invisiblePixel
-        gameButton = tk.Button(root, text=game, image=invisiblePixel, command=runFunction, height = 215-10, width = 460-10, compound="c")
+        gameButton = tk.Button(root, text=game, image=invisiblePixel, command=runFunction, height = 215-10, width = 460-10, compound="c", borderwidth=0)
     return gameButton
 
 root = tk.Tk()

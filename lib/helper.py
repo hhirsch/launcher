@@ -1,5 +1,5 @@
 from os import path
-from .assetexception import AssetException
+from assetexception import AssetException
 
 def gameIsInProfile(game):
     return path.exists(helper.getProfilePath(game))
