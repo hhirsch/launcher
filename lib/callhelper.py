@@ -11,9 +11,11 @@ def runGenericGame(game, data):
     gamePath = os.path.normpath(getCachePath(game))
     linuxNative = False
     runningLinux = platform in ["linux", "linux2"]
-    gameData = data["windows"]
+    if "windows" in data:
+        gameData = data["windows"]
+
     if "linux" in data:
-        if runningLinux and binaryFound(gameData["exe"]):
+        if runningLinux and binaryFound(data["linux"]["exe"]):
             gameData = data["linux"]
             linuxNative = True
 
