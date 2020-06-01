@@ -1,6 +1,12 @@
 from os import path
 from .assetexception import AssetException
 
+def gameIsInProfile(game):
+    return path.exists(helper.getProfilePath(game))
+
+def gameIsInCache(game):
+    return path.exists(helper.getCachePath(game))
+
 def getCachePath(game):
     return path.normpath('repository/' + game)
 

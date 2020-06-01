@@ -2,35 +2,11 @@ import tkinter as tk
 from tkinter import PhotoImage, Label, messagebox
 from PIL import ImageTk, Image
 import os, subprocess
-from sys import platform
 from os import path
 import json
 from lib import helper
 from lib.assetexception import AssetException
-
-def gameIsInProfile(game):
-    return path.exists(helper.getProfilePath(game))
-
-def gameIsInCache(game):
-    return path.exists(helper.getCachePath(game))
-
-def runGenericGame(game, data):
-    gamePath = os.path.normpath(helper.getCachePath(game))
-    if "path" in data:
-        gamePath = gamePath + '/' + data['path']
-
-    if "linux-exe" in data:
-        call = [data['linux-exe']]
-    else:
-        call = [data['exe']]
-        if platform in ["linux", "linux2"]:
-            call.insert(0, "wine")
-
-    if "params" in data:
-        for index, param in enumerate(data['params']):
-            call.append(param)
-
-    subprocess.call(call, cwd=gamePath)
+from lib.callhelper import runGenericGame
 
 def getRunFunction(game, data):
     runFunction = lambda: runGenericGame(game, data)
@@ -58,21 +34,22 @@ json_file = 'launcher.json'
 with open(json_file) as json_data:
     data = json.load(json_data)
 
-def showPopup(event):
+def showAbout():
+    messagebox.showinfo("About", "Game Launcher made 2020 by Henry & Josepha Hirsch")
+
+def createMenu(root):
     menu = tk.Menu(root, tearoff=0)
-    menu.add_command(label='Delete', command=showMessage)
-    menu.add_command(label='Say Hello', command=showMessage)
-    menu.post(event.x_root, event.y_root)
+    menu.add_command(label='about', command=showAbout)
+    menu.add_command(label='close')
 
-def showMessage():
-    print("POOOPUP")
-    messagebox.showinfo("Title", "a Tk MessageBox")
-
+    return menu;
 
 for index, content in enumerate(data['games']):
     gameButton = addGame(content, data['games'][content], root)
     currentRow = (index+1) / 5
-    gameButton.bind("<Button-3>", showPopup)
+    menu = createMenu(root)
+    showMenu = lambda event: menu.post(event.x_root, event.y_root)
+    gameButton.bind("<Button-3>", showMenu)
     gameButton.grid(row=int(currentRow), column=index+1)
 
 root.mainloop()
