@@ -3,6 +3,7 @@ from tkinter import PhotoImage, Label, messagebox
 from PIL import ImageTk, Image
 from helper import *
 from assetexception import AssetException
+from callhelper import runGenericGame
 
 def getRunFunction(game, data):
     runFunction = lambda: runGenericGame(game, data)

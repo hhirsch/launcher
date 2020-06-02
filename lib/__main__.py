@@ -6,7 +6,6 @@ from os import path
 import json, math
 from helper import *
 from uihelper import *
-from callhelper import runGenericGame
 from sys import platform
 
 root = tk.Tk()
@@ -24,6 +23,7 @@ for index, content in enumerate(data['games']):
     gameButton = addGame(content, data['games'][content], root)
     rawRow = (index+1) / rowLenght
     currentRow = math.ceil(rawRow)
+    root.rowconfigure(currentRow, weight=5)
     gameButton.grid(row=int(currentRow), column=currentColumn)
     if currentColumn == rowLenght:
         currentColumn = 0;
