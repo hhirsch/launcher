@@ -1,17 +1,18 @@
 from os import path
 from assetexception import AssetException
+from shutil import copytree
 
-def gameIsInProfile(game):
-    return path.exists(helper.getProfilePath(game))
+def gameIsInRepository(game):
+    return path.exists(getRepositoryPath(game))
 
 def gameIsInCache(game):
-    return path.exists(helper.getCachePath(game))
+    return path.exists(getCachePath(game))
 
 def getCachePath(game):
-    return path.normpath('repository/' + game)
-
-def getProfilePath(game):
     return path.normpath('games/' + game)
+
+def getRepositoryPath(game):
+    return path.normpath('repository/' + game)
 
 def getImagePath(game):
     imagePath = path.normpath('data/images/' + game)
@@ -23,5 +24,8 @@ def getImagePath(game):
 
     raise AssetException("Image not found!")
 
-def copyToProfile(game):
-    print('hello')
+def copyToCache(game):
+    if not path.exists(getCachePath(game)):
+        if path.isdir(getRepositoryPath(game)):
+            copytree(getRepositoryPath(game), getCachePath(game))
+

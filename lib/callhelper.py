@@ -1,6 +1,6 @@
 from os import path
 import os, subprocess
-from helper import getCachePath
+from helper import getCachePath, copyToCache, gameIsInCache
 from sys import platform
 from shutil import which
 
@@ -8,6 +8,8 @@ def binaryFound(binary):
     return which(binary) is not None
 
 def runGenericGame(game, data):
+    if not gameIsInCache(game):
+        copyToCache(game);
     gamePath = os.path.normpath(getCachePath(game))
     linuxNative = False
     runningLinux = platform in ["linux", "linux2"]
