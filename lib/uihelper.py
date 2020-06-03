@@ -12,18 +12,27 @@ def getRunFunction(game, data):
         runFunction = lambda: runGenericGame(game, data)
     return runFunction
 
-def addGame(game, data, root):
+def createButton(root, game, data):
     runFunction = getRunFunction(game, data)
+    gameImage = ImageTk.PhotoImage(Image.open(getImagePath(game)))
+    label = Label(image=gameImage)
+    label.image = gameImage
+    gameButton = tk.Button(root, text=game, image=gameImage, command=runFunction, borderwidth=0)
+
+    return gameButton
+
+def createButtonWithoutImage(root, game, data):
+    invisiblePixel = tk.PhotoImage(width=1, height=1)
+    label = Label(image=invisiblePixel)
+    label.image = invisiblePixel
+    gameButton = tk.Button(root, text=game, image=invisiblePixel, command=runFunction, height = 215-10, width = 460-10, compound="c", borderwidth=0)
+
+    return gameButton
+def addGame(root, game, data):
     try:
-        gameImage = ImageTk.PhotoImage(Image.open(getImagePath(game)))
-        label = Label(image=gameImage)
-        label.image = gameImage
-        gameButton = tk.Button(root, text=game, image=gameImage, command=runFunction, borderwidth=0)
+        gameButton = createButton(root, game, data)
     except AssetException:
-        invisiblePixel = tk.PhotoImage(width=1, height=1)
-        label = Label(image=invisiblePixel)
-        label.image = invisiblePixel
-        gameButton = tk.Button(root, text=game, image=invisiblePixel, command=runFunction, height = 215-10, width = 460-10, compound="c", borderwidth=0)
+        gameButton = createButtonWithoutImage(root, game, data)
     if "menu" in data:
         menu = createMenu(root, game, data['menu'])
         showMenu = lambda event: menu.post(event.x_root, event.y_root)

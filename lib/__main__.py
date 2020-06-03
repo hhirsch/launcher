@@ -6,11 +6,11 @@ from os import path
 import json, math
 from helper import *
 from uihelper import *
+from ui.launcherwindow import LauncherWindow
 from sys import platform
 
 root = tk.Tk()
-root.geometry("960x600")
-root.title('Game Launcher')
+launcherWindow = LauncherWindow(root)
 
 json_file = 'launcher.json'
 with open(json_file) as json_data:
@@ -20,7 +20,7 @@ createWindowMenu(root, data)
 currentColumn = 1;
 rowLenght = 4
 for index, content in enumerate(data['games']):
-    gameButton = addGame(content, data['games'][content], root)
+    gameButton = addGame(root, content, data['games'][content])
     rawRow = (index+1) / rowLenght
     currentRow = math.ceil(rawRow)
     root.rowconfigure(currentRow, weight=5)

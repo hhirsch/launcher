@@ -1,6 +1,6 @@
 package:
 	rm -f launcher-ui.zip
-	cd lib; zip -r launcher-ui.zip *.py;
+	cd lib; zip -r launcher-ui.zip ui/*.py *.py;
 	cd ..;
 	mv lib/launcher-ui.zip ./;
 
