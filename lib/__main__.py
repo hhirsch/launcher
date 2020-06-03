@@ -16,20 +16,21 @@ json_file = 'launcher.json'
 with open(json_file) as json_data:
     data = json.load(json_data)
 
+rowLength = 4
 if "launcher" in data:
     if "cache" in data["launcher"]:
         cache = (data["launcher"]["cache"] == "True")
-
+    if "rowLength" in data["launcher"]:
+        rowLength = data["launcher"]["rowLength"]
 createWindowMenu(root, data)
 currentColumn = 1;
-rowLenght = 4
 for index, content in enumerate(data['games']):
     gameButton = addGame(root, content, data['games'][content])
-    rawRow = (index+1) / rowLenght
+    rawRow = (index+1) / rowLength
     currentRow = math.ceil(rawRow)
     root.rowconfigure(currentRow, weight=5)
     gameButton.grid(row=int(currentRow), column=currentColumn)
-    if currentColumn == rowLenght:
+    if currentColumn == rowLength:
         currentColumn = 0;
     currentColumn += 1;
 root.mainloop()

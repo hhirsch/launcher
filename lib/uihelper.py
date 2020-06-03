@@ -4,6 +4,7 @@ from PIL import ImageTk, Image, ImageDraw
 from helper import *
 from assetexception import AssetException
 from callhelper import runGenericGame, runGenericGameWithStartup
+from sys import platform
 
 def getRunFunction(game, data):
     if "startup" in data:
@@ -62,9 +63,11 @@ def createWindowMenu(root, data):
     filemenu = tk.Menu(menubar, tearoff=0)
     helpmenu = tk.Menu(menubar, tearoff=0)
     menuData = data['launcher']['menu']
+    runningLinux = platform in ["linux", "linux2"]
     for index, content in enumerate(menuData):
-        menuRunFunction = getRunFunction(content, menuData[content])
-        filemenu.add_command(label=content, command=menuRunFunction)
+        if (not runningLinux and "windows" not in menuData[content]) or (runningLinux):
+            menuRunFunction = getRunFunction(content, menuData[content])
+            filemenu.add_command(label=content, command=menuRunFunction)
 
     filemenu.add_command(label="Quit", command=root.destroy)
     helpmenu.add_command(label="About", command=showAbout)
