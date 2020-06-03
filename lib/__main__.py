@@ -11,10 +11,14 @@ from sys import platform
 
 root = tk.Tk()
 launcherWindow = LauncherWindow(root)
-
+cache = False;
 json_file = 'launcher.json'
 with open(json_file) as json_data:
     data = json.load(json_data)
+
+if "launcher" in data:
+    if "cache" in data["launcher"]:
+        cache = (data["launcher"]["cache"] == "True")
 
 createWindowMenu(root, data)
 currentColumn = 1;

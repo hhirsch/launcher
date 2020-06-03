@@ -3,7 +3,7 @@ from tkinter import PhotoImage, Label, messagebox
 from PIL import ImageTk, Image
 from helper import *
 from assetexception import AssetException
-from callhelper import runGenericGame
+from callhelper import runGenericGame, runGenericGameWithStartup
 
 def getRunFunction(game, data):
     if "startup" in data:
@@ -28,6 +28,7 @@ def createButtonWithoutImage(root, game, data):
     gameButton = tk.Button(root, text=game, image=invisiblePixel, command=runFunction, height = 215-10, width = 460-10, compound="c", borderwidth=0)
 
     return gameButton
+
 def addGame(root, game, data):
     try:
         gameButton = createButton(root, game, data)
