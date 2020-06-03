@@ -6,7 +6,10 @@ from assetexception import AssetException
 from callhelper import runGenericGame
 
 def getRunFunction(game, data):
-    runFunction = lambda: runGenericGame(game, data)
+    if "startup" in data:
+        runFunction = lambda: runGenericGameWithStartup(game, data)
+    else:
+        runFunction = lambda: runGenericGame(game, data)
     return runFunction
 
 def addGame(game, data, root):

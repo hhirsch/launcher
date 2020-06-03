@@ -7,6 +7,9 @@ from shutil import which
 def binaryFound(binary):
     return which(binary) is not None
 
+def runGenericGameWithStartup(game, data):
+    runGenericGame(game, data["startup"])
+
 def runGenericGame(game, data):
     if not gameIsInCache(game):
         copyToCache(game);

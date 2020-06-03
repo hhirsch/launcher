@@ -2,6 +2,7 @@
 *.exe
 repository/*
 data/*
+web/*
 games/*
 lib/__pycache__/
 launcher.json

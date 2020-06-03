@@ -4,3 +4,5 @@ package:
 	cd ..;
 	mv lib/launcher-ui.zip ./;
 
+serve:
+	python -m http.server --directory web
