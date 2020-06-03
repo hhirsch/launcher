@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import PhotoImage, Label, messagebox
-from PIL import ImageTk, Image
+from PIL import ImageTk, Image, ImageDraw
 from helper import *
 from assetexception import AssetException
 from callhelper import runGenericGame, runGenericGameWithStartup
@@ -14,7 +14,11 @@ def getRunFunction(game, data):
 
 def createButton(root, game, data):
     runFunction = getRunFunction(game, data)
-    gameImage = ImageTk.PhotoImage(Image.open(getImagePath(game)))
+    image = Image.open(getImagePath(game)).convert('RGBA')
+    if not gameIsInCache(game):
+        downloadIconImage = Image.open(getImagePath("download"))
+        image.paste(downloadIconImage)
+    gameImage = ImageTk.PhotoImage(image)
     label = Label(image=gameImage)
     label.image = gameImage
     gameButton = tk.Button(root, text=game, image=gameImage, command=runFunction, borderwidth=0)
