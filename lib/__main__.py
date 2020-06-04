@@ -1,13 +1,10 @@
 import tkinter as tk
 from tkinter import PhotoImage, Label, messagebox
-from PIL import ImageTk, Image
-import os, subprocess
 from os import path
 import json, math
 from helper import *
 from uihelper import *
 from ui.launcherwindow import LauncherWindow
-from sys import platform
 
 root = tk.Tk()
 launcherWindow = LauncherWindow(root)
