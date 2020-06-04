@@ -1,9 +1,6 @@
 import tkinter as tk
-from tkinter import PhotoImage, Label, messagebox
-from os import path
-import json, math
-from helper import *
-from uihelper import *
+import math
+from uihelper import createWindowMenu, addGame
 from ui.launcherwindow import LauncherWindow
 from config import Config
 
