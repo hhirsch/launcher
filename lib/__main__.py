@@ -5,6 +5,7 @@ import json, math
 from helper import *
 from uihelper import *
 from ui.launcherwindow import LauncherWindow
+from config import Config
 
 root = tk.Tk()
 launcherWindow = LauncherWindow(root)
@@ -14,11 +15,20 @@ with open(json_file) as json_data:
     data = json.load(json_data)
 
 rowLength = 4
-if "launcher" in data:
-    if "cache" in data["launcher"]:
-        cache = (data["launcher"]["cache"] == "True")
-    if "rowLength" in data["launcher"]:
-        rowLength = data["launcher"]["rowLength"]
+
+config = Config("launcher.json")
+#print(config.getValue(["launcher", "cache"]))
+
+try:
+    cache = config.getValue(["launcher", "cache"])  == "True"
+except:
+    cache = False;
+
+try:
+    rowLength = config.getValue(["launcher", "rowLength"])
+except:
+    rowLength = 4
+
 createWindowMenu(root, data)
 currentColumn = 1;
 for index, content in enumerate(data['games']):
