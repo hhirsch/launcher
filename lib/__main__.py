@@ -10,14 +10,9 @@ from config import Config
 root = tk.Tk()
 launcherWindow = LauncherWindow(root)
 cache = False;
-json_file = 'launcher.json'
-with open(json_file) as json_data:
-    data = json.load(json_data)
-
-rowLength = 4
 
 config = Config("launcher.json")
-#print(config.getValue(["launcher", "cache"]))
+data = config.getData()
 
 try:
     cache = config.getValue(["launcher", "cache"])  == "True"

@@ -10,7 +10,6 @@ class Config:
         else:
             raise AssetException("Config file not found!")
 
-    # input ["path", "to", "config", "setting"]
     def getValue(self, pathList):
         if pathList[0] in self.data:
             lastPathFragment = self.data[pathList[0]]
@@ -22,3 +21,6 @@ class Config:
                 lastPathFragment = lastPathFragment[pathFragmentKey]
 
         return lastPathFragment
+
+    def getData(self):
+        return self.data
