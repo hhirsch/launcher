@@ -12,7 +12,6 @@ launcherWindow = LauncherWindow(root)
 cache = False;
 
 config = Config("launcher.json")
-data = config.getData()
 
 try:
     cache = config.getValue(["launcher", "cache"])  == "True"
@@ -24,10 +23,10 @@ try:
 except:
     rowLength = 4
 
-createWindowMenu(root, data)
+createWindowMenu(root, config.getValue(["launcher", "menu"]))
 currentColumn = 1;
-for index, content in enumerate(data['games']):
-    gameButton = addGame(root, content, data['games'][content])
+for index, content in enumerate(config.getValue(["games"])):
+    gameButton = addGame(root, content, config.getValue(["games", content]))
     rawRow = (index+1) / rowLength
     currentRow = math.ceil(rawRow)
     root.rowconfigure(currentRow, weight=5)

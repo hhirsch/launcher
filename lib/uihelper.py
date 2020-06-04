@@ -58,11 +58,10 @@ def createMenu(root, game, menuData):
 def showAbout():
     messagebox.showinfo("About", "Game Launcher made 2020 by Henry & Josepha Hirsch")
 
-def createWindowMenu(root, data):
+def createWindowMenu(root, menuData):
     menubar = tk.Menu(root)
     filemenu = tk.Menu(menubar, tearoff=0)
     helpmenu = tk.Menu(menubar, tearoff=0)
-    menuData = data['launcher']['menu']
     runningLinux = platform in ["linux", "linux2"]
     for index, content in enumerate(menuData):
         if (not runningLinux and "windows" not in menuData[content]) or (runningLinux):
