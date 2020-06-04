@@ -1,7 +1,7 @@
 import tkinter as tk
-from tkinter import PhotoImage, Label, messagebox
-from PIL import ImageTk, Image, ImageDraw
-from helper import *
+from tkinter import Label, messagebox
+from PIL import ImageTk, Image
+from helper import getImagePath, gameIsInCache
 from assetexception import AssetException
 from callhelper import runGenericGame, runGenericGameWithStartup
 from sys import platform
@@ -27,6 +27,7 @@ def createButton(root, game, data):
     return gameButton
 
 def createButtonWithoutImage(root, game, data):
+    runFunction = getRunFunction(game, data)
     invisiblePixel = tk.PhotoImage(width=1, height=1)
     label = Label(image=invisiblePixel)
     label.image = invisiblePixel
