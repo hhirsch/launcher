@@ -1,4 +1,3 @@
-from os import path
 import os, subprocess
 from helper import getCachePath, copyToCache, gameIsInCache
 from sys import platform
