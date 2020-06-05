@@ -20,18 +20,16 @@ def createButton(root, game, data):
         downloadIconImage = Image.open(getImagePath("download"))
         image.paste(downloadIconImage)
     gameImage = ImageTk.PhotoImage(image)
-    label = Label(image=gameImage)
-    label.image = gameImage
     gameButton = tk.Button(root, text=game, image=gameImage, command=runFunction, borderwidth=0)
+    gameButton.image = gameImage
 
     return gameButton
 
 def createButtonWithoutImage(root, game, data):
     runFunction = getRunFunction(game, data)
     invisiblePixel = tk.PhotoImage(width=1, height=1)
-    label = Label(image=invisiblePixel)
-    label.image = invisiblePixel
     gameButton = tk.Button(root, text=game, image=invisiblePixel, command=runFunction, height = 215-10, width = 460-10, compound="c", borderwidth=0)
+    gameButton.image = invisiblePixel
 
     return gameButton
 
