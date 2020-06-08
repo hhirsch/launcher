@@ -12,14 +12,14 @@ def runGenericGameWithStartup(game, data):
 
     runGenericGame(game, data)
 
-
 def runGenericGame(game, data):
     if not gameIsInCache(game):
         copyToCache(game);
     gamePath = os.path.normpath(getCachePath(game))
     linuxNative = False
     runningLinux = platform in ["linux", "linux2"]
-    gameData = data["windows"]
+    if "windows" in data:
+        gameData = data["windows"]
 
     if "linux" in data:
         if runningLinux and binaryFound(data["linux"]["exe"]):
