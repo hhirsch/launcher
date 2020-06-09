@@ -32,6 +32,7 @@ class ScrolledWindow(tk.Frame):
         self.parent = parent
 
         # creating a scrollbars
+        self.scrollPosition = 0
         self.xscrlbr = ttk.Scrollbar(self.parent, orient = 'horizontal')
         self.xscrlbr.grid(column = 0, row = 1, sticky = 'ew', columnspan = 2)
         self.yscrlbr = ttk.Scrollbar(self.parent)
@@ -66,13 +67,20 @@ class ScrolledWindow(tk.Frame):
 
     def _bound_to_mousewheel(self, event):
         self.canv.bind_all("<MouseWheel>", self._on_mousewheel)
+        self.canv.bind_all("<Button-5>", self._on_mousewheel_plus)
+        self.canv.bind_all("<Button-4>", self._on_mousewheel_minus)
 
     def _unbound_to_mousewheel(self, event):
         self.canv.unbind_all("<MouseWheel>")
 
     def _on_mousewheel(self, event):
         self.canv.yview_scroll(int(-1*(event.delta/120)), "units")
-
+    def _on_mousewheel_plus(self, event):
+        self.scrollPosition +=1
+        self.canv.yview_scroll(self.scrollPosition, "units")
+    def _on_mousewheel_minus(self, event):
+        self.scrollPosition -=1
+        self.canv.yview_scroll(self.scrollPosition, "units")
     def _configure_window(self, event):
         # update the scrollbars to match the size of the inner frame
         size = (self.scrollwindow.winfo_reqwidth(), self.scrollwindow.winfo_reqheight())
