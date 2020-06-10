@@ -9,6 +9,7 @@ from config import Config
 root = tk.Tk()
 Grid.rowconfigure(root, 0, weight=1)
 Grid.columnconfigure(root, 0, weight=1)
+
 scrolledWindow = ScrolledWindow(root)
 frame=Frame(scrolledWindow.scrollwindow)
 frame.grid(row=0, column=0, sticky=N+S+E+W)

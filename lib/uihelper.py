@@ -1,9 +1,9 @@
 import tkinter as tk
-from tkinter import Label, messagebox
+from tkinter import Label, messagebox, ttk
 from PIL import ImageTk, Image
 from helper import getImagePath, gameIsInCache
 from assetexception import AssetException
-from callhelper import runGenericGame, runGenericGameWithStartup
+from callhelper import runGenericGame, runGenericGameWithStartup, runCommand
 from sys import platform
 
 def getRunFunction(game, data):
@@ -11,6 +11,11 @@ def getRunFunction(game, data):
         runFunction = lambda: runGenericGameWithStartup(game, data)
     else:
         runFunction = lambda: runGenericGame(game, data)
+    return runFunction
+
+
+def getMenuRunFunction(path, data):
+    runFunction = lambda: runCommand(path, data)
     return runFunction
 
 def createButton(root, game, data):
@@ -28,7 +33,7 @@ def createButton(root, game, data):
 def createButtonWithoutImage(root, game, data):
     runFunction = getRunFunction(game, data)
     invisiblePixel = tk.PhotoImage(width=1, height=1)
-    gameButton = tk.Button(root, text=game, image=invisiblePixel, command=runFunction, height = 215-10, width = 460-10, compound="c", borderwidth=0)
+    gameButton = ttk.Button(root, text=game, image=invisiblePixel, command=runFunction, height = 215-10, width = 460-10, compound="c", borderwidth=0)
     gameButton.image = invisiblePixel
 
     return gameButton
@@ -61,11 +66,9 @@ def createWindowMenu(root, menuData):
     menubar = tk.Menu(root)
     filemenu = tk.Menu(menubar, tearoff=0)
     helpmenu = tk.Menu(menubar, tearoff=0)
-    runningLinux = platform in ["linux", "linux2"]
     for index, content in enumerate(menuData):
-        if (not runningLinux and "windows" not in menuData[content]) or (runningLinux):
-            menuRunFunction = getRunFunction(content, menuData[content])
-            filemenu.add_command(label=content, command=menuRunFunction)
+        menuRunFunction = getMenuRunFunction("./", menuData[content])
+        filemenu.add_command(label=content, command=menuRunFunction)
 
     filemenu.add_command(label="Quit", command=root.destroy)
     helpmenu.add_command(label="About", command=showAbout)

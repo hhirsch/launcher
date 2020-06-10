@@ -15,26 +15,29 @@ def runGenericGameWithStartup(game, data):
 def runGenericGame(game, data):
     if not gameIsInCache(game):
         copyToCache(game);
-    gamePath = os.path.normpath(getCachePath(game))
+    path = os.path.normpath(getCachePath(game))
+    runCommand(path, data)
+
+def runCommand(path, data):
+    path = os.path.normpath(path)
     linuxNative = False
     runningLinux = platform in ["linux", "linux2"]
     if "windows" in data:
-        gameData = data["windows"]
+        executable = data["windows"]
 
     if "linux" in data:
         if runningLinux and binaryFound(data["linux"]["exe"]):
-            gameData = data["linux"]
+            executable = data["linux"]
             linuxNative = True
 
-    if "path" in gameData:
-        gamePath = gamePath + '/' + gameData['path']
+    if "path" in executable:
+        path = path + '/' + executable['path']
 
-    call = [gameData["exe"]]
+    call = [executable["exe"]]
     if not linuxNative and runningLinux:
         call.insert(0, "wine")
 
-    if "params" in gameData:
-        for index, param in enumerate(gameData['params']):
+    if "params" in executable:
+        for index, param in enumerate(executable['params']):
             call.append(param)
-
-    subprocess.call(call, cwd=gamePath)
+    subprocess.call(call, cwd=path)
