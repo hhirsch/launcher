@@ -2,7 +2,10 @@ from os import path
 import json
 
 class Config:
-    def __init__(self, fileName):
+    def __init__(self):
+        self.data = ""
+
+    def load(self, fileName):
         self.fileName = fileName
         if path.exists(fileName):
             with open(fileName) as fileHandle:
@@ -23,4 +26,11 @@ class Config:
         return lastPathFragment
 
     def getData(self):
+
         return self.data
+
+    def getConfig(self, pathList):
+        config = Config()
+        config.data = self.getValue(pathList)
+
+        return config;

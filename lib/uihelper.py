@@ -38,18 +38,6 @@ def createButtonWithoutImage(root, game, data):
 
     return gameButton
 
-def addGame(root, game, data):
-    try:
-        gameButton = createButton(root, game, data)
-    except AssetException:
-        gameButton = createButtonWithoutImage(root, game, data)
-    if "menu" in data:
-        menu = createMenu(root, game, data['menu'])
-        showMenu = lambda event: menu.post(event.x_root, event.y_root)
-        gameButton.bind("<Button-3>", showMenu)
-
-    return gameButton
-
 def createMenu(root, game, menuData):
     menu = tk.Menu(root, tearoff=0)
     for index, content in enumerate(menuData):

@@ -4,5 +4,6 @@ repository/*
 data/*
 web/*
 games/*
+python-demos/*
 lib/__pycache__/
 launcher.json

@@ -76,10 +76,10 @@ class ScrolledWindow(tk.Frame):
     def _on_mousewheel(self, event):
         self.canv.yview_scroll(int(-1*(event.delta/120)), "units")
     def _on_mousewheel_plus(self, event):
-        self.scrollPosition +=1
+        self.scrollPosition +=5
         self.canv.yview_scroll(self.scrollPosition, "units")
     def _on_mousewheel_minus(self, event):
-        self.scrollPosition -=1
+        self.scrollPosition -=5
         self.canv.yview_scroll(self.scrollPosition, "units")
     def _configure_window(self, event):
         # update the scrollbars to match the size of the inner frame
