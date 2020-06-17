@@ -1,8 +1,8 @@
 import tkinter as tk
 from tkinter import Label, ttk
-from PIL import ImageTk, Image
 from helper import getImagePath, gameIsInCache
-from uihelper import getRunFunction
+from uihelper import getRunFunction, getImageOrException
+from assetexception import AssetException
 
 class DetailWindow:
     def __init__(self, root, game, config):
@@ -20,12 +20,13 @@ class DetailWindow:
         gameName = Label(self.window, text=appTitle)
         self._addWidget(gameName)
         gameName.config(font=("Sans", 20))
-        image = Image.open(getImagePath(game)).convert('RGBA')
-        if not gameIsInCache(game):
-            downloadIconImage = Image.open(getImagePath("download"))
-            image.paste(downloadIconImage)
-        self.window.gameImage = ImageTk.PhotoImage(image)
-        panel = ttk.Label(self.window, image = self.window.gameImage)
+        try:
+            self.window.gameImage = getImageOrException(game)
+            panel = ttk.Label(self.window, image = self.window.gameImage)
+        except AssetException:
+            invisiblePixel = tk.PhotoImage(width=460, height=1)
+            self.window.gameImage = invisiblePixel
+            panel = ttk.Label(self.window, image = self.window.gameImage)
         self._addWidget(panel)
         try:
             appDescription = config.getValue(["description"])
