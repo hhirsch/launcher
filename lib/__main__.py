@@ -7,7 +7,9 @@ config = Config()
 try:
     config.load("launcher.json")
 except:
-    messagebox.showerror(title="Config file not found", message="You don't have a launcher.json in your main directory.")
+    ERROR_MESSAGE_TITLE = "Config file not found"
+    ERROR_MESSAGE_TEXT = "You don't have a launcher.json in your main directory."
+    messagebox.showerror(title=ERROR_MESSAGE_TITLE, message=ERROR_MESSAGE_TEXT)
     quit()
 
 launcherWindow = LauncherWindow()
