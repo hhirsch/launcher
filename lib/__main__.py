@@ -1,12 +1,16 @@
-from tkinter import Grid, N, W, S, E
+from tkinter import Grid, N, W, S, E, messagebox
 import math
 from ui.launcherwindow import LauncherWindow
 from config import Config
 
 config = Config()
-config.load("launcher.json")
-launcherWindow = LauncherWindow()
+try:
+    config.load("launcher.json")
+except:
+    messagebox.showerror(title="Config file not found", message="You don't have a launcher.json in your main directory.")
+    quit()
 
+launcherWindow = LauncherWindow()
 cache = False;
 
 try:
