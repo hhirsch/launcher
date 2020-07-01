@@ -17,5 +17,10 @@ class Style:
         Style._defaultButtonHighlight(widget)
         widget.config(font=("Impact", 20))
 
+    def styleDarkBox(widget):
+        Color.paintButton(widget)
+        Style._defaultButtonHighlight(widget)
+        widget.config(font=("Impact", 15))
+
     def _defaultButtonHighlight(widget):
         widget.config(highlightbackground='black', highlightthickness='2')

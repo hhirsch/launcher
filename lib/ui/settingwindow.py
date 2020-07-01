@@ -12,7 +12,7 @@ class SettingWindow:
         self.currentRow = 0
         self.window = tk.Toplevel(root, bg=Color.background)
         self.window.title("Linux Tweaks")
-        self.window.geometry("350x900")
+        self.window.geometry("350x400")
         self.window.resizable(0, 0)
         self._createButtons(root, game, config.getData())
     def _createButtons(self, root, game, data):

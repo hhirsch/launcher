@@ -14,9 +14,9 @@ class DetailWindow:
         self.columnSpan = 4
         self.currentRow = 0
         self.root = root
-        self.window = tk.Toplevel(root, bg=Color.background)
+        self.window = tk.Toplevel(root, bg=Color.darkBackground)
         self.window.title("Game Launcher " + game)
-        self.window.geometry("460x470")
+        self.window.geometry("460x460")
         self.window.resizable(0, 0)
         config.setValue("appName", game)
         self.config = config
@@ -50,12 +50,18 @@ class DetailWindow:
         except:
             pass
         self._createPlayButton()
+        try:
+            appTitle = config.getValue(["mods"])
+            self._createModSelector(self.window, config.getData())
+            self.currentRow += 1
+        except:
+            self._createEmptyModSelector(self.window, config.getData())
+            self.currentRow += 1
         self._createTopBarButtons(self.window, game, config.getData())
         self.currentRow += 1
         self._createFooterButtons(self.window)
         self.currentRow += 1
-        self._createModSelector(self.window, config.getData())
-        self._createButtons(root, game, config.getData())
+        #self._createButtons(root, game, config.getData())
     def _addWidget(self, widget):
         widget.grid(column=0,row=self.currentRow, sticky='ns', columnspan=self.columnSpan)
         self.currentRow += 1
@@ -68,26 +74,24 @@ class DetailWindow:
         removeBorders(playButton)
         Style.stylePrimaryButton(playButton)
         playButton.grid(rowspan=2, column=0,row=self.currentRow, sticky='nws')
-    def _updatePlayFunction(self, game, data):
-        self.playFunction = getRunFunction(game, config.getData())
     def _createModSelector(self, root, data):
         modLabel = Label(self.window, text="Modification:")
         removeBorders(modLabel)
-        Color.paintBox(modLabel)
-        modLabel.grid(column=0,row=self.currentRow, sticky='nswe', columnspan=1)
+        Color.paintDark(modLabel)
+        modLabel.grid(column=1,row=self.currentRow, sticky='nswe', columnspan=1)
         variable = StringVar(self.window)
         variable.set("Standard") # default value
         option = OptionMenu(self.window, variable, "Standard", "Tales of Middle-Earth", "Age of Chivalry", "Definitive Edition", command=self.modSelected)
         option.config(relief='flat')
         removeBorders(option)
-        Color.paintBox(option)
-        Color.paintBox(option["menu"])
-        option.grid(column=1,row=self.currentRow, sticky='nswe', columnspan=2)
-        spaceLabel = Label(self.window)
-        removeBorders(spaceLabel)
-        Color.paintBox(spaceLabel)
-        spaceLabel.grid(column=3,row=self.currentRow, sticky='nswe')
-        self.currentRow += 1
+        Color.paintDark(option)
+        Color.paintDark(option["menu"])
+        option.grid(column=2,row=self.currentRow, sticky='nswe', columnspan=2)
+    def _createEmptyModSelector(self, root, data):
+        modLabel = Label(self.window)
+        removeBorders(modLabel)
+        Color.paintDark(modLabel)
+        modLabel.grid(column=1,row=self.currentRow, sticky='nswe', columnspan=4)
     def modSelected(self, value):
         modConfig = self.config.getConfig(["mods", value])
         newRunner = RunnerFactory.getRunner(self.config)
@@ -108,21 +112,22 @@ class DetailWindow:
     def _createFooterButtons(self, root):
         button = tk.Button(self.window, text="Savegame Config")
         removeBorders(button)
-        Color.paintBox(button)
+        Color.paintDark(button)
         button.grid(column=0,row=self.currentRow, sticky='nswe')
         linuxTweaks = lambda: SettingWindow(self.window, self.game, self.config)
         button = tk.Button(self.window, text="Linux Tweaks", command=linuxTweaks)
         removeBorders(button)
-        Color.paintBox(button)
+        Color.paintDark(button)
         button.grid(column=1,row=self.currentRow, sticky='nswe')
         button = tk.Button(self.window, text="Game Tools")
         removeBorders(button)
-        Color.paintBox(button)
+        Color.paintDark(button)
         button.grid(column=2,row=self.currentRow, sticky='nswe')
         button = tk.Button(self.window, text="Game Info")
         removeBorders(button)
-        Color.paintBox(button)
+        Color.paintDark(button)
         button.grid(column=3,row=self.currentRow, sticky='nswe')
+
     def _createButtons(self, root, game, data):
         if "detail" in data:
             detailData = data['detail']

@@ -57,13 +57,22 @@ class RunnerFactory:
         newConfig = RunnerFactory.getConfigNeutralizeOperatingSystem(config)
         executable = newConfig.getValue(["exe"])
         try:
-            path = newConfig.getValue(["path"])
+            pathValue = newConfig.getValue(["path"])
+            path = getCachePath(pathValue)
         except:
             pass
+
         try:
             appName = newConfig.getValue(["appName"])
-            path = getCachePath(appName + '/' + path)
+            path = getCachePath(appName)
         except Exception as e:
+            pass
+
+        try:
+            appName = newConfig.getValue(["appName"])
+            pathValue = newConfig.getValue(["path"])
+            path = getCachePath(appName + '/' + pathValue)
+        except:
             pass
 
         runner = Runner(executable, path)
@@ -89,5 +98,4 @@ class RunnerFactory:
                 runner.addParam(param)
         except:
             pass
-        print(runner.params)
         return runner
