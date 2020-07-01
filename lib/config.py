@@ -3,7 +3,7 @@ import json
 
 class Config:
     def __init__(self):
-        self.data = ""
+        self.data = {}
 
     def load(self, fileName):
         self.fileName = fileName
@@ -14,15 +14,12 @@ class Config:
             raise AssetException("Config file not found!")
 
     def getValue(self, pathList):
-        if pathList[0] in self.data:
-            lastPathFragment = self.data[pathList[0]]
-        else:
-            raise IndexError("Key does not exist!")
-        lastPathFragment = self.data;
+        lastPathFragment = self.data
         for index, pathFragmentKey in enumerate(pathList):
             if pathFragmentKey in lastPathFragment:
                 lastPathFragment = lastPathFragment[pathFragmentKey]
-
+            else:
+                raise IndexError("Key does not exist!")
         return lastPathFragment
 
     def getData(self):
@@ -31,6 +28,9 @@ class Config:
 
     def getConfig(self, pathList):
         config = Config()
-        config.data = self.getValue(pathList)
+        config.data = self.getValue(pathList).copy()
 
         return config;
+
+    def setValue(self, key, value):
+        self.data[key] = value

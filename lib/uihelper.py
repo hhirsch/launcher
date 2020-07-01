@@ -3,6 +3,10 @@ from tkinter import ttk
 from helper import getImagePath, gameIsInCache
 from callhelper import runGenericGame, runGenericGameWithStartup
 from assetexception import AssetException
+from ui.color import Color
+
+def removeBorders(widget):
+    widget.config(borderwidth=0, highlightthickness=0)
 
 def getImageOrException(game):
     import importlib
@@ -30,7 +34,9 @@ def createButton(root, game, data):
     runFunction = getRunFunction(game, data)
     try:
         gameImage = getImageOrException(game)
-        gameButton = tk.Button(root, text=game, image=gameImage, command=runFunction, borderwidth=0)
+        gameButton = tk.Button(root, text=game, image=gameImage, command=runFunction)
+        removeBorders(gameButton)
+        Color.paintDark(gameButton)
         gameButton.image = gameImage
     except AssetException:
         gameButton = createButtonWithoutImage(root, game, data)
@@ -43,12 +49,3 @@ def createButtonWithoutImage(root, game, data):
     gameButton.image = invisiblePixel
 
     return gameButton
-
-def createMenu(root, game, menuData):
-    menu = ttk.Menu(root, tearoff=0)
-    for index, content in enumerate(menuData):
-        runFunction = getRunFunction(game, menuData[content])
-        menu.add_command(label=content, command=runFunction)
-    menu.add_command(label='close')
-
-    return menu;

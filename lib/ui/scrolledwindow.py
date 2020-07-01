@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
+from ui.color import Color
 
 class ScrolledWindow(tk.Frame):
     """
@@ -41,7 +42,7 @@ class ScrolledWindow(tk.Frame):
         self.canv = tk.Canvas(self.parent)
         self.canv.config(relief = 'flat',
                          width = 10,
-                         heigh = 10, bd = 2)
+                         heigh = 10, bd = 0, highlightthickness=0, bg = Color.background)
         # placing a canvas into frame
         self.canv.grid(column = 0, row = 0, sticky = 'nsew')
         # accociating scrollbar comands to canvas scroling

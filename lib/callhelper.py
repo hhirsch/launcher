@@ -2,17 +2,24 @@ import os, subprocess
 from helper import getCachePath, copyToCache, gameIsInCache
 from sys import platform
 from shutil import which
+from runnerfactory import RunnerFactory
+
+def getRunner(game, config):
+    config.setData("appPath", game)
+    return RunnerFactory.getRunner(config)
 
 def binaryFound(binary):
     return which(binary) is not None
 
 def runGenericGameWithStartup(game, data):
+    print("running game")
     for index, param in enumerate(data['startup']):
         runGenericGame(game, data["startup"][param])
 
     runGenericGame(game, data)
 
 def runGenericGame(game, data):
+    print("running game without startup")
     if not gameIsInCache(game):
         copyToCache(game);
     path = os.path.normpath(getCachePath(game))

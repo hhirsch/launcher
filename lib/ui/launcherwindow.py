@@ -1,9 +1,10 @@
-from tkinter import Tk, Grid, Frame, N, S, E, W, Menu, messagebox
+from tkinter import Tk, Grid, Frame, N, S, E, W, Menu, messagebox, font
 from ui.scrolledwindow import ScrolledWindow
 from uihelper import createButton, createButtonWithoutImage
 from assetexception import AssetException
 from callhelper import runCommand
 from ui.detailwindow import DetailWindow
+from ui.color import Color
 
 class LauncherWindow:
     def __init__(self):
@@ -37,9 +38,12 @@ class LauncherWindow:
         messagebox.showinfo("About", "Game Launcher made 2020 by Henry & Josepha Hirsch")
 
     def createMenu(self, menuData):
-        menubar = Menu(self.root)
-        filemenu = Menu(menubar, tearoff=0)
-        helpmenu = Menu(menubar, tearoff=0)
+        menubar = Menu(self.root, relief='flat')
+        Color.paintDark(menubar)
+        filemenu = Menu(menubar, tearoff=0, relief='flat')
+        Color.paintDark(filemenu)
+        helpmenu = Menu(menubar, tearoff=0, relief='flat')
+        Color.paintDark(helpmenu)
         for index, content in enumerate(menuData):
             menuRunFunction = self.getMenuRunFunction("./", menuData[content])
             filemenu.add_command(label=content, command=menuRunFunction)
