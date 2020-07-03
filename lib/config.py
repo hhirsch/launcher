@@ -22,6 +22,12 @@ class Config:
                 raise IndexError("Key does not exist!")
         return lastPathFragment
 
+    def hasValue(self, key):
+        if key in self.getData():
+            return True
+
+        return False
+
     def getData(self):
 
         return self.data
