@@ -16,7 +16,7 @@ class DetailWindow:
         self.root = root
         self.window = tk.Toplevel(root, bg=Color.darkBackground)
         self.window.title("Game Launcher " + game)
-        self.window.geometry("460x460")
+        self.window.geometry("460x470")
         self.window.resizable(0, 0)
         config.setValue("appName", game)
         self.config = config
@@ -81,7 +81,8 @@ class DetailWindow:
         modLabel.grid(column=3,row=self.currentRow, sticky='nswe', columnspan=1)
         variable = StringVar(self.window)
         variable.set("Standard") # default value
-        option = OptionMenu(self.window, variable, "Standard", "Tales of Middle-Earth", "Age of Chivalry", "Definitive Edition", command=self.modSelected)
+        options = self.config.getValue(["mods"])
+        option = OptionMenu(self.window, variable, *options , command=self.modSelected)
         option.config(relief='flat')
         removeBorders(option)
         Color.paintDark(option)
@@ -109,23 +110,31 @@ class DetailWindow:
                 topBarColumn += 1
         self.currentRow += 1
     def _createFooterButtons(self, root):
+        modLabel = Label(self.window)
+        removeBorders(modLabel)
+        Color.paintDark(modLabel)
+        modLabel.grid(column=0,row=self.currentRow, sticky='nswe', columnspan=4)
+        self.currentRow += 1
         button = tk.Button(self.window, text="Savegame Config")
         removeBorders(button)
         Color.paintDark(button)
-        button.grid(column=0,row=self.currentRow, sticky='nsw')
-        linuxTweaks = lambda: SettingWindow(self.window, self.game, self.config)
-        button = tk.Button(self.window, text="Linux Tweaks", command=linuxTweaks)
+        button.grid(column=0,row=self.currentRow, sticky='sw')
+        if self.config.hasValue("linux-tweaks"):
+            linuxTweaks = lambda: SettingWindow(self.window, self.game, self.config)
+            button = tk.Button(self.window, text="Linux Tweaks", command=linuxTweaks)
+        else:
+            button = tk.Button(self.window, text="Linux Tweaks")
         removeBorders(button)
         Color.paintDark(button)
-        button.grid(column=1,row=self.currentRow, sticky='nsw')
+        button.grid(column=1,row=self.currentRow, sticky='sw')
         button = tk.Button(self.window, text="Game Tools")
         removeBorders(button)
         Color.paintDark(button)
-        button.grid(column=2,row=self.currentRow, sticky='nsw')
+        button.grid(column=2,row=self.currentRow, sticky='sw')
         button = tk.Button(self.window, text="Game Info")
         removeBorders(button)
         Color.paintDark(button)
-        button.grid(column=3,row=self.currentRow, sticky='nsw')
+        button.grid(column=3,row=self.currentRow, sticky='sw')
 
     def _createButtons(self, root, game, data):
         if "detail" in data:
