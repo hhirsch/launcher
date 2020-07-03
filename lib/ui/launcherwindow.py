@@ -14,7 +14,7 @@ class LauncherWindow:
         Grid.rowconfigure(root, 0, weight=1)
         Grid.columnconfigure(root, 0, weight=1)
         scrolledWindow = ScrolledWindow(root)
-        self.frame=Frame(scrolledWindow.scrollwindow)
+        self.frame=Frame(scrolledWindow.scrollwindow, bg = Color.background)
         self.frame.grid(row=0, column=0, sticky=N+S+E+W)
     def mainloop(self):
         self.root.mainloop()
