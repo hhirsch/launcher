@@ -29,9 +29,7 @@ class ScrolledWindow(tk.Frame):
 
        """
         super().__init__(parent, *args, **kwargs)
-
         self.parent = parent
-
         # creating a scrollbars
         self.scrollPosition = 0
         self.xscrlbr = ttk.Scrollbar(self.parent, orient = 'horizontal')
@@ -42,7 +40,7 @@ class ScrolledWindow(tk.Frame):
         self.canv = tk.Canvas(self.parent)
         self.canv.config(relief = 'flat',
                          width = 10,
-                         heigh = 10, bd = 0, highlightthickness=0, bg = Color.background)
+                         heigh = 10, bd = 0, highlightthickness=0, bg = Color.background )
         # placing a canvas into frame
         self.canv.grid(column = 0, row = 0, sticky = 'nsew')
         # accociating scrollbar comands to canvas scroling
@@ -80,8 +78,9 @@ class ScrolledWindow(tk.Frame):
         self.scrollPosition +=5
         self.canv.yview_scroll(self.scrollPosition, "units")
     def _on_mousewheel_minus(self, event):
-        self.scrollPosition -=5
-        self.canv.yview_scroll(self.scrollPosition, "units")
+        if self.scrollPosition >= 5:
+            self.scrollPosition -=5
+            self.canv.yview_scroll(self.scrollPosition, "units")
     def _configure_window(self, event):
         # update the scrollbars to match the size of the inner frame
         size = (self.scrollwindow.winfo_reqwidth(), self.scrollwindow.winfo_reqheight())
