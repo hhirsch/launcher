@@ -7,6 +7,9 @@ class Runner:
         self.params = []
     def addStartup(self, runner):
         self.startup.append(runner)
+    def setStartup(self, runner):
+        self.startup = []
+        self.startup.append(runner)
     def setParams(self, params):
         self.params = params.copy()
     def addParam(self, param):
@@ -24,3 +27,8 @@ class Runner:
             for index, param in enumerate(self.params):
                 call.append(param)
         subprocess.call(call, cwd=path)
+
+    def runStartup(self):
+        if self.runners:
+            for index, runner in enumerate(self.startup):
+                runner.run()

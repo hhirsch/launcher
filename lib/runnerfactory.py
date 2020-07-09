@@ -7,26 +7,24 @@ from config import Config
 class RunnerFactory:
     @staticmethod
     def getConfigNeutralizeOperatingSystem(config):
+        app = False
         newConfig = Config()
         nativeLinuxAvailable = False
         linuxPlatform = False
         executable = []
-        try:
+        if(config.hasValue("windows")):
             app = config.getConfig(["windows"])
-            executable = [app.getValue(["exe"])]
-        except Exception as e:
-            pass
+            if app.hasValue("exe"):
+                executable = [app.getValue(["exe"])]
 
         if platform in ["linux", "linux2"]:
             if executable:
                 executable.insert(0, "wine")
             linuxPlatform = True
-            try:
+            if(config.hasValue("linux")):
                 app = config.getConfig(["linux"])
                 executable = [app.getValue(["exe"])]
                 nativeLinuxAvailable = True
-            except:
-                pass
 
         if not app:
             raise Exception("No executable found")
@@ -82,6 +80,19 @@ class RunnerFactory:
                 runner.addParam(param)
         except:
             pass
+
+        try:
+            startupCommands = config.getValue(["startup"])
+            for startupCommand in startupCommands:
+                startupCommandConfig = config.getConfig(["startup", startupCommand])
+                startupCommandConfig.setValue("appName", appName)
+                startupRunner = RunnerFactory.getRunner(startupCommandConfig)
+                runner.addStartup(startupRunner)
+        except Exception as e:
+            pass
+
+
+
         return runner
     @staticmethod
     def modifyRunner(runner, config):
