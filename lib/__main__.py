@@ -14,7 +14,7 @@ except:
     messagebox.showerror(title=ERROR_MESSAGE_TITLE, message=ERROR_MESSAGE_TEXT)
     quit()
 
-launcherWindow = LauncherWindow()
+
 cache = False;
 
 try:
@@ -27,10 +27,8 @@ try:
 except:
     rowLength = 4
 
-launcherWindow.createMenu(config.getValue(["launcher", "menu"]))
-
-parentDir = 'games'
-main = Main(rowLength, launcherWindow)
-for dirItem in os.listdir(parentDir):
-    main.loadApp(parentDir, dirItem)
-launcherWindow.mainloop()
+repositoryDirectory = 'games'
+main = Main(rowLength, config)
+for applicationDirectory in os.listdir(repositoryDirectory):
+    main.loadApp(repositoryDirectory, applicationDirectory)
+main.run()

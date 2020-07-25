@@ -4,18 +4,22 @@ from uihelper import createButton, createButtonWithoutImage
 from assetexception import AssetException
 from callhelper import runCommand
 from ui.detailwindow import DetailWindow
+from ui.systemwindow import SystemWindow
 from ui.color import Color
 
 class LauncherMenu:
-    def __init__(self, root):
-        self.root = root
-
+    def __init__(self, serviceLocator):
+        self.root = serviceLocator.root
+        self.systemWindow = serviceLocator.systemWindow
     def getMenuRunFunction(self, path, data):
         runFunction = lambda: runCommand(path, data)
         return runFunction
 
     def showAbout(self):
         messagebox.showinfo("About", "Game Launcher made 2020 by Henry & Josepha Hirsch")
+
+    def showSystem(self):
+        self.systemWindow.showWindow()
 
     def createMenu(self, menuData):
         menubar = Menu(self.root, relief='flat')
@@ -32,7 +36,7 @@ class LauncherMenu:
         helpmenu.add_command(label="About", command=self.showAbout)
         menubar.add_cascade(label="File", menu=filemenu)
         menubar.add_cascade(label="Help", menu=helpmenu)
-        menubar.add_command(label="System", command=self.showAbout)
+        menubar.add_command(label="System", command=self.showSystem)
         menubar.add_command(label="Network", command=self.showAbout)
         menubar.add_command(label="Profile", command=self.showAbout)
         self.root.config(menu=menubar)

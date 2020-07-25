@@ -91,8 +91,6 @@ class RunnerFactory:
         except Exception as e:
             pass
 
-
-
         return runner
     @staticmethod
     def modifyRunner(runner, config):

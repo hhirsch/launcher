@@ -26,7 +26,8 @@ class Runner:
         if self.params:
             for index, param in enumerate(self.params):
                 call.append(param)
-        subprocess.call(call, cwd=path)
+        result = subprocess.run(call, cwd=path, capture_output=True)
+        return result
 
     def runStartup(self):
         if self.runners:

@@ -9,7 +9,7 @@ from ui.style import Style
 from ui.settingwindow import SettingWindow
 
 class DetailWindow:
-    def __init__(self, root, game, config):
+    def __init__(self, root, game, config, serviceLocator):
         self.game = game
         self.columnSpan = 4
         self.currentRow = 0
@@ -20,6 +20,7 @@ class DetailWindow:
         self.window.resizable(0, 0)
         config.setValue("appName", game)
         self.config = config
+        self.serviceLocator = serviceLocator
         self.runner = RunnerFactory.getRunner(self.config)
         try:
             appTitle = config.getValue(["title"])
@@ -68,8 +69,12 @@ class DetailWindow:
     def _addWidgetFullWidth(self, widget):
         widget.grid(column=0,row=self.currentRow, sticky='nswe', columnspan=self.columnSpan)
         self.currentRow += 1
+    def _runAndLog(self):
+        result = self.runner.run()
+        self.serviceLocator.systemWindow.addMessage(result.stdout)
+        self.serviceLocator.systemWindow.addMessage(result.stderr)
     def _createPlayButton(self):
-        playFunction = lambda: self.runner.run()
+        playFunction = lambda: self._runAndLog()
         playButton = tk.Button(self.window, text="▶ Play", width=5, command=playFunction)
         removeBorders(playButton)
         Style.stylePrimaryButton(playButton)
