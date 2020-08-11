@@ -100,6 +100,7 @@ class DetailWindow:
         modLabel.grid(column=1,row=self.currentRow, sticky='nswe', columnspan=4)
     def modSelected(self, value):
         modConfig = self.config.getConfig(["mods", value])
+        modConfig.setValue("appName", self.game)
         newRunner = RunnerFactory.getRunner(self.config)
         self.runner = RunnerFactory.modifyRunner(newRunner, modConfig)
     def _createTopBarButtons(self, root, game, data):

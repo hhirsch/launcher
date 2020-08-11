@@ -96,8 +96,22 @@ class RunnerFactory:
     def modifyRunner(runner, config):
         config = RunnerFactory.getConfigNeutralizeOperatingSystem(config)
         try:
+            pathValue = config.getValue(["path"])
+            path = getCachePath(pathValue)
+
+        except:
+            pass
+
+        try:
+            appName = config.getValue(["appName"])
+            pathValue = config.getValue(["path"])
+            path = getCachePath(appName + '/' + pathValue)
+        except:
+            pass
+        runner.setPath(path)
+        try:
             executable = config.getValue(['exe'])
-            runner.setExecutable(runner.executable + executable)
+            runner.setExecutable(executable)
         except:
             pass
 
