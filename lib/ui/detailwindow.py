@@ -7,6 +7,7 @@ from assetexception import AssetException
 from ui.color import Color
 from ui.style import Style
 from ui.settingwindow import SettingWindow
+from threading import Thread
 
 class DetailWindow:
     def __init__(self, root, game, config, serviceLocator):
@@ -73,12 +74,15 @@ class DetailWindow:
         result = self.runner.run()
         self.serviceLocator.systemWindow.addMessage(result.stdout)
         self.serviceLocator.systemWindow.addMessage(result.stderr)
+    def _runAndLogThread(self):
+        thread = Thread(target = self._runAndLog())
+        thread.start()
     def _createPlayButton(self):
-        playFunction = lambda: self._runAndLog()
-        playButton = tk.Button(self.window, text="▶ Play", width=5, command=playFunction)
-        removeBorders(playButton)
-        Style.stylePrimaryButton(playButton)
-        playButton.grid(rowspan=2, column=0,row=self.currentRow, sticky='nws')
+        playFunction = lambda: self._runAndLogThread()
+        self.playButton = tk.Button(self.window, text="▶ Play", width=5, command=playFunction)
+        removeBorders(self.playButton)
+        Style.stylePrimaryButton(self.playButton)
+        self.playButton.grid(rowspan=2, column=0,row=self.currentRow, sticky='nws')
     def _createModSelector(self, root, data):
         modLabel = Label(self.window)
         removeBorders(modLabel)
