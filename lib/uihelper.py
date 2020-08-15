@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import ttk
+from tkinter import ttk, PhotoImage
 from helper import getImagePath, gameIsInCache
 from callhelper import runGenericGame, runGenericGameWithStartup
 from assetexception import AssetException
@@ -9,6 +9,12 @@ def removeBorders(widget):
     widget.config(borderwidth=0, highlightthickness=0)
 
 def getImageOrException(game):
+    try:
+        return PhotoImage(file=getImagePath(game))
+    except AssetException:
+        raise AssetException("Unable to load image")
+
+def getImageOrExceptionPil(game):
     import importlib
     pil = importlib.util.find_spec("PIL")
     found = pil is not None

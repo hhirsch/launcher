@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import Label, ttk, CENTER, NW, StringVar, OptionMenu
+from tkinter import Label, ttk, CENTER, NW, StringVar, OptionMenu, NORMAL, DISABLED
 from helper import getImagePath, gameIsInCache
 from uihelper import getRunFunction, getImageOrException, removeBorders
 from runnerfactory import RunnerFactory
@@ -8,6 +8,9 @@ from ui.color import Color
 from ui.style import Style
 from ui.settingwindow import SettingWindow
 from threading import Thread
+from concurrent import futures
+
+thread_pool_executor = futures.ThreadPoolExecutor(max_workers=10)
 
 class DetailWindow:
     def __init__(self, root, game, config, serviceLocator):
@@ -75,9 +78,14 @@ class DetailWindow:
         self.serviceLocator.systemWindow.addMessage(result.stdout)
         self.serviceLocator.systemWindow.addMessage(result.stderr)
     def _runAndLogThread(self):
-        thread = Thread(target = self._runAndLog())
-        thread.start()
+        self.playButton.configure(text="Running")
+        self.playButton["state"] = DISABLED
+        thread_pool_executor.submit(self._runAndLog)
+        self.playButton["state"] = NORMAL
+        self.playButton.configure(text="▶ Play")
     def _createPlayButton(self):
+        self.playButtonText = tk.StringVar()
+        self.playButtonText.set("▶ Play")
         playFunction = lambda: self._runAndLogThread()
         self.playButton = tk.Button(self.window, text="▶ Play", width=5, command=playFunction)
         removeBorders(self.playButton)

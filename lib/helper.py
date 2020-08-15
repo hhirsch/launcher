@@ -16,6 +16,13 @@ def getRepositoryPath(game):
 
 def getImagePath(game):
     imagePath = path.normpath('data/images/' + game)
+    if path.exists(imagePath + '.ppm'):
+        return imagePath + '.ppm'
+
+    raise AssetException("Image not found!")
+
+def getPilImagePath(game):
+    imagePath = path.normpath('data/images/' + game)
     if path.exists(imagePath + '.png'):
         return imagePath + '.png'
 
