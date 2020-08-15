@@ -37,6 +37,4 @@ class LauncherMenu:
         menubar.add_cascade(label="File", menu=filemenu)
         menubar.add_cascade(label="Help", menu=helpmenu)
         menubar.add_command(label="System", command=self.showSystem)
-        menubar.add_command(label="Network", command=self.showAbout)
-        menubar.add_command(label="Profile", command=self.showAbout)
         self.root.config(menu=menubar)
