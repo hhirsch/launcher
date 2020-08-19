@@ -1,9 +1,24 @@
-{"games": {
-  "wololo-kingdoms": {
-    "path":"age2_x1",
-    "exe": "WK.exe"
-  },
-  "anno": {
-    "exe": "1602.exe"
+{ "launcher": {
+  "rowLength": 4,
+  "cache": "True",
+  "menu": {
+    "Configure Wine": {
+      "linux": {
+        "exe": "winecfg"
+      }
+    },
+    "Manage Software Wine": {
+      "linux": {
+        "exe": "wine",
+        "params": ["uninstaller"]
+      }
+    },
+    "Install DirectPlay": {
+      "linux": {
+        "exe": "winetricks",
+        "params": ["directplay"]
+      }
+    }
   }
-}}
+}
+}
