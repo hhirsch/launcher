@@ -22,7 +22,7 @@ def runGenericGame(game, data):
     print("running game without startup")
     if not gameIsInCache(game):
         copyToCache(game);
-    path = os.path.normpath(getCachePath(game))
+    path = os.path.join(os.getcwd(), getCachePath(game))
     runCommand(path, data)
 
 def runCommand(path, data):
@@ -38,8 +38,7 @@ def runCommand(path, data):
             linuxNative = True
 
     if "path" in executable:
-        path = path + '/' + executable['path']
-
+        path = os.path.join(path,  executable['path']) 
     call = [executable["exe"]]
     if not linuxNative and runningLinux:
         call.insert(0, "wine")
@@ -47,4 +46,4 @@ def runCommand(path, data):
     if "params" in executable:
         for index, param in enumerate(executable['params']):
             call.append(param)
-    subprocess.call(call, cwd=path)
+    subprocess.run(call, cwd=path)

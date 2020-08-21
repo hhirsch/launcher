@@ -7,7 +7,7 @@ from main import Main
 
 config = Config()
 try:
-    config.load("launcher.json")
+    config.load(os.path.join(os.getcwd(),"launcher.json"))
 except:
     ERROR_MESSAGE_TITLE = "Config file not found"
     ERROR_MESSAGE_TEXT = "You don't have a launcher.json in your main directory."
