@@ -46,4 +46,4 @@ def runCommand(path, data):
     if "params" in executable:
         for index, param in enumerate(executable['params']):
             call.append(param)
-    subprocess.run(call, cwd=path)
+    subprocess.run(call, cwd=path, shell=True, check=True)
