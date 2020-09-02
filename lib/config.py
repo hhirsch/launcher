@@ -36,7 +36,7 @@ class Config:
         config = Config()
         config.data = self.getValue(pathList).copy()
 
-        return config;
+        return config
 
     def setValue(self, key, value):
         self.data[key] = value
