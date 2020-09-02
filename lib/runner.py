@@ -1,11 +1,11 @@
 import os, subprocess
 
 class Runner:
-    def __init__(self, executable, path, add_shell):
+    def __init__(self, executable, path, addShell):
         self.executable = executable.copy()
         self.path = path
         self.params = []
-        self.add_shell = add_shell
+        self.addShell = addShell
     def addStartup(self, runner):
         self.startup.append(runner)
     def setStartup(self, runner):
@@ -27,7 +27,7 @@ class Runner:
         if self.params:
             for index, param in enumerate(self.params):
                 call.append(param)
-        if self.add_shell:
+        if self.addShell:
             result = subprocess.run(call, cwd=path, capture_output=True, shell=True, check=True)
         else:
             result = subprocess.run(call, cwd=path, capture_output=True)
