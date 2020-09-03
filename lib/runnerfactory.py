@@ -44,9 +44,9 @@ class RunnerFactory:
         except:
             pass
 
-        for k in [["appName"], ["startup"]]:
-            if config.hasValue(k[0]):
-                newConfig.setValue(k[0], config.getValue(k))
+        for key in [["appName"], ["startup"]]:
+            if config.hasValue(key[0]):
+                newConfig.setValue(key[0], config.getValue(key))
 
         return newConfig
 
