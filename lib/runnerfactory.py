@@ -3,6 +3,7 @@ from runner import Runner
 from sys import platform
 from helper import getCachePath
 from config import Config
+from inspect import currentframe, getframeinfo
 
 class RunnerFactory:
     @staticmethod
@@ -35,12 +36,6 @@ class RunnerFactory:
         except:
             pass
 
-        try:
-            appName = config.getValue(["appName"])
-            newConfig.setValue("appName", appName)
-        except:
-            pass
-
         newConfig.setValue("exe", executable)
 
         try:
@@ -48,50 +43,45 @@ class RunnerFactory:
             newConfig.setValue("params", params.copy())
         except:
             pass
+
+        for key in [["appName"], ["startup"]]:
+            if config.hasValue(key[0]):
+                newConfig.setValue(key[0], config.getValue(key))
+
         return newConfig
+
     @staticmethod
     def getRunner(config):
         path = None
         newConfig = RunnerFactory.getConfigNeutralizeOperatingSystem(config)
         executable = newConfig.getValue(["exe"])
-        try:
-            pathValue = newConfig.getValue(["path"])
-            path = getCachePath(pathValue)
-        except:
-            pass
 
-        try:
-            appName = newConfig.getValue(["appName"])
-            path = getCachePath(appName)
-        except Exception as e:
-            pass
+        pathValue = newConfig.getValue(["path"])
+        path = getCachePath(pathValue)
 
-        try:
-            appName = newConfig.getValue(["appName"])
-            pathValue = newConfig.getValue(["path"])
-            path = getCachePath(appName + '/' + pathValue)
-        except:
-            pass
+        appName = newConfig.getValue(["appName"])
+        path = getCachePath(appName)
 
-        runner = Runner(executable, path)
-        try:
-            params = newConfig.getValue(["params"])
-            for param in params:
+        appName = newConfig.getValue(["appName"])
+        pathValue = newConfig.getValue(["path"])
+        path = getCachePath(appName + '/' + pathValue)
+
+        path = os.path.join(os.getcwd(), path)
+        runner = Runner(executable, path, platform not in ["linux", "linux2"])
+
+        if newConfig.hasValue("params"):
+            for param in newConfig.getValue(["params"]):
                 runner.addParam(param)
-        except:
-            pass
 
-        try:
-            startupCommands = config.getValue(["startup"])
-            for startupCommand in startupCommands:
+        if newConfig.hasValue("startup"):
+            for startupCommand in config.getValue(["startup"]):
                 startupCommandConfig = config.getConfig(["startup", startupCommand])
                 startupCommandConfig.setValue("appName", appName)
                 startupRunner = RunnerFactory.getRunner(startupCommandConfig)
                 runner.addStartup(startupRunner)
-        except Exception as e:
-            pass
 
         return runner
+
     @staticmethod
     def modifyRunner(runner, config):
         config = RunnerFactory.getConfigNeutralizeOperatingSystem(config)
