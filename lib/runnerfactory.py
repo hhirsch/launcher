@@ -73,7 +73,7 @@ class RunnerFactory:
         except:
             pass
 
-        runner = Runner(executable, path)
+        runner = Runner(executable, path, platform not in ["linux", "linux2"])
         try:
             params = newConfig.getValue(["params"])
             for param in params:
