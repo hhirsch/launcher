@@ -30,7 +30,7 @@ class Runner:
         if self.addShell:
             result = subprocess.run(call, cwd=path, capture_output=True, shell=True, check=True)
         else:
-            result = subprocess.run(call, cwd=path, capture_output=True)
+            result = subprocess.run(call, cwd=path, capture_output=False)
         return result
 
     def runStartup(self):
