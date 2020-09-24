@@ -7,10 +7,14 @@ from assetexception import AssetException
 from ui.color import Color
 from ui.style import Style
 from ui.settingwindow import SettingWindow
+from queue import Queue
 from threading import Thread
-from concurrent import futures
 
-thread_pool_executor = futures.ThreadPoolExecutor(max_workers=10)
+
+def ThreadCallRunner(input, output):
+    runner = input.get()
+    result = runner.run()
+    output.put(result)
 
 class DetailWindow:
     def __init__(self, root, game, config, serviceLocator):
@@ -74,13 +78,19 @@ class DetailWindow:
         widget.grid(column=0,row=self.currentRow, sticky='nswe', columnspan=self.columnSpan)
         self.currentRow += 1
     def _runAndLog(self):
-        result = self.runner.run()
+        in_q = Queue()
+        out_q = Queue()
+        in_q.put(self.runner)
+        t1 = Thread(target=ThreadCallRunner, args=(in_q,out_q))
+        t1.start()
+        in_q.join()
+        result = out_q.get()
         self.serviceLocator.systemWindow.addMessage(result.stdout)
         self.serviceLocator.systemWindow.addMessage(result.stderr)
     def _runAndLogThread(self):
         self.playButton.configure(text="Running")
         self.playButton["state"] = DISABLED
-        thread_pool_executor.submit(self._runAndLog)
+        self._runAndLog()
         self.playButton["state"] = NORMAL
         self.playButton.configure(text="▶ Play")
     def _createPlayButton(self):
