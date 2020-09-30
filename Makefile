@@ -9,3 +9,6 @@ serve:
 
 run: package
 	python launcher-ui.zip
+
+test:
+	python servicelocatortest.py
