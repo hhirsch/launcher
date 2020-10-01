@@ -7,10 +7,9 @@ from assetexception import AssetException
 from ui.color import Color
 from ui.style import Style
 from ui.settingwindow import SettingWindow
+from queue import Queue
 from threading import Thread
 from concurrent import futures
-
-thread_pool_executor = futures.ThreadPoolExecutor(max_workers=10)
 
 class DetailWindow:
     def __init__(self, root, game, config, serviceLocator):
