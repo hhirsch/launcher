@@ -6,3 +6,9 @@ package:
 
 serve:
 	python -m http.server --directory web
+
+run: package
+	python launcher-ui.zip
+
+test:
+	python servicelocatortest.py
