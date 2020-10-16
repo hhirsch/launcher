@@ -32,7 +32,7 @@ except:
     rowLength = 4
 
 repositoryDirectory = 'games'
-runnerDemon = RunnerDemon(runnerQueue)
+runnerDemon = RunnerDemon(config, runnerQueue)
 runnerDemonThread = Thread(target = runnerDemon.run)
 main = Main(runnerQueue, rowLength, config)
 for applicationDirectory in os.listdir(repositoryDirectory):
