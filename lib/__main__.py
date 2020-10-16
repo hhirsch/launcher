@@ -4,7 +4,11 @@ from ui.launcherwindow import LauncherWindow
 from config import Config
 import os
 from main import Main
+from runnerdemon import RunnerDemon
+from threading import Thread
+from queue import Queue
 
+queue = Queue()
 config = Config()
 try:
     config.load(os.path.join(os.getcwd(),"launcher.json"))
@@ -28,7 +32,14 @@ except:
     rowLength = 4
 
 repositoryDirectory = 'games'
-main = Main(rowLength, config)
+queue.put("foo")
+queue.put("bar")
+queue.put("baz")
+runnerDemon = RunnerDemon(queue)
+runnerDemonThread = Thread(target = runnerDemon.run)
+main = Main(queue, rowLength, config)
 for applicationDirectory in os.listdir(repositoryDirectory):
     main.loadApp(repositoryDirectory, applicationDirectory)
+runnerDemonThread.start()
 main.run()
+queue.put("kill")

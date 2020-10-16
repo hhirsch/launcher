@@ -86,7 +86,7 @@ class DetailWindow:
     def _createPlayButton(self):
         self.playButtonText = tk.StringVar()
         self.playButtonText.set("▶ Play")
-        playFunction = lambda: self._runAndLogThread()
+        playFunction = lambda: self._runAndLog()
         self.playButton = tk.Button(self.window, text="▶ Play", width=5, command=playFunction)
         removeBorders(self.playButton)
         Style.stylePrimaryButton(self.playButton)
