@@ -6,12 +6,7 @@ import os, subprocess
 
 class RunnerDemon(Demon):
     def startSubprocess(self, runner):
-        runInShell = False
-        try:
-            self.config.getValue(["runInShell"])
-        except:
-            pass
-        if runInShell == True:
+        if (runner['runInShell'] == 'yes'):
             subprocess.run(runner['call'], cwd=runner['path'],
                            capture_output=True, shell=True, check=True)
         else:
@@ -24,3 +19,6 @@ class RunnerDemon(Demon):
             else:
                 runner = json.loads(job)
                 self.startSubprocess(runner)
+                if runner['startup']:
+                    for index, startupRunner in enumerate(runner['startup']):
+                        self.startSubprocess(startupRunner)
