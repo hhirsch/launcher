@@ -75,12 +75,6 @@ class DetailWindow:
         self.currentRow += 1
     def _runAndLog(self):
         self.serviceLocator.runnerQueue.put(self.runner.toJson())
-    def _runAndLogThread(self):
-        self.playButton.configure(text="Running")
-        self.playButton["state"] = DISABLED
-        thread_pool_executor.submit(self._runAndLog)
-        self.playButton["state"] = NORMAL
-        self.playButton.configure(text="▶ Play")
     def _createPlayButton(self):
         self.playButtonText = tk.StringVar()
         self.playButtonText.set("▶ Play")
