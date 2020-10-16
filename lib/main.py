@@ -6,7 +6,7 @@ from servicelocatorfactory import ServiceLocatorFactory
 import os
 
 class Main:
-    def __init__(self, rowLength, config):
+    def __init__(self, queue, rowLength, config):
         self.currentColumn = 1;
         self.index = 0
         self.rowLength = rowLength
