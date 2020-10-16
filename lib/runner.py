@@ -7,6 +7,7 @@ class Runner:
         self.path = path
         self.params = []
         self.addShell = addShell
+        self.startup = []
     def addStartup(self, runner):
         self.startup.append(runner)
     def setStartup(self, runner):
@@ -44,8 +45,19 @@ class Runner:
                 call.append(param)
         return call
     def toJson(self):
+        data = self.toArray()
+        if self.startup:
+            data['startup'] = []
+            for index, runner in enumerate(self.startup):
+                data['startup'].append(runner.toArray())
+        return json.dumps(data)
+
+    def toArray(self):
         data = {}
         data['call'] = self.getCall()
         data['path'] = self.path
-
-        return json.dumps(data)
+        if self.addShell:
+            data['runInShell'] = "yes"
+        else:
+            data['runInShell'] = "no"
+        return data
