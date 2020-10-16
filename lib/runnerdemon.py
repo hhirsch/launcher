@@ -1,15 +1,10 @@
+from demon import Demon
 from runner import Runner
 import time
 import json
 import os, subprocess
 
-class RunnerDemon:
-    def __init__(self, config, queue):
-        self.config = config
-        self.queue = queue
-        self.alive = True
-    def kill(self):
-        self.alive = False
+class RunnerDemon(Demon):
     def startSubprocess(self, runner):
         runInShell = False
         try:
@@ -29,7 +24,3 @@ class RunnerDemon:
             else:
                 runner = json.loads(job)
                 self.startSubprocess(runner)
-    def run(self):
-        print("Runner Demon started")
-        while(self.alive):
-            self.work()
