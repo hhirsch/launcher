@@ -1,4 +1,5 @@
 import os, subprocess
+import json
 
 class Runner:
     def __init__(self, executable, path, addShell):
@@ -32,8 +33,19 @@ class Runner:
         else:
             result = subprocess.run(call, cwd=path, capture_output=False)
         return result
-
     def runStartup(self):
         if self.runners:
             for index, runner in enumerate(self.startup):
                 runner.run()
+    def getCall(self):
+        call = self.executable.copy()
+        if self.params:
+            for index, param in enumerate(self.params):
+                call.append(param)
+        return call
+    def toJson(self):
+        data = {}
+        data['call'] = self.getCall()
+        data['path'] = self.path
+
+        return json.dumps(data)

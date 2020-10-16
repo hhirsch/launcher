@@ -74,9 +74,7 @@ class DetailWindow:
         widget.grid(column=0,row=self.currentRow, sticky='nswe', columnspan=self.columnSpan)
         self.currentRow += 1
     def _runAndLog(self):
-        result = self.runner.run()
-        self.serviceLocator.systemWindow.addMessage(result.stdout)
-        self.serviceLocator.systemWindow.addMessage(result.stderr)
+        self.serviceLocator.runnerQueue.put(self.runner.toJson())
     def _runAndLogThread(self):
         self.playButton.configure(text="Running")
         self.playButton["state"] = DISABLED

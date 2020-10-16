@@ -8,7 +8,7 @@ from runnerdemon import RunnerDemon
 from threading import Thread
 from queue import Queue
 
-queue = Queue()
+runnerQueue = Queue()
 config = Config()
 try:
     config.load(os.path.join(os.getcwd(),"launcher.json"))
@@ -32,14 +32,11 @@ except:
     rowLength = 4
 
 repositoryDirectory = 'games'
-queue.put("foo")
-queue.put("bar")
-queue.put("baz")
-runnerDemon = RunnerDemon(queue)
+runnerDemon = RunnerDemon(runnerQueue)
 runnerDemonThread = Thread(target = runnerDemon.run)
-main = Main(queue, rowLength, config)
+main = Main(runnerQueue, rowLength, config)
 for applicationDirectory in os.listdir(repositoryDirectory):
     main.loadApp(repositoryDirectory, applicationDirectory)
 runnerDemonThread.start()
 main.run()
-queue.put("kill")
+runnerQueue.put("kill")

@@ -6,11 +6,12 @@ from servicelocatorfactory import ServiceLocatorFactory
 import os
 
 class Main:
-    def __init__(self, queue, rowLength, config):
+    def __init__(self, runnerQueue, rowLength, config):
         self.currentColumn = 1;
         self.index = 0
         self.rowLength = rowLength
         serviceLocator = ServiceLocatorFactory.getServiceLocator(config)
+        serviceLocator.runnerQueue = runnerQueue
         launcherWindow = LauncherWindow(serviceLocator)
         launcherWindow.createMenu(config.getValue(["launcher", "menu"]))
         self.launcherWindow = launcherWindow
